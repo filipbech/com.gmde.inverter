@@ -1,0 +1,26 @@
+{
+  "name": {
+    "en": "Inverter"
+  },
+  "class": "other",
+  "capabilities": [],
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/small.png",
+    "xlarge": "{{driverAssetsPath}}/images/small.png"
+  },
+  "pair": [{
+    "id":"list_devices",
+    "template": "list_devices",
+    "navigation": {
+      "next": "add_devices"
+    }
+  },{
+    "id":"add_devices",
+    "template": "add_devices"
+  }]
+}

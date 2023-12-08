@@ -1,0 +1,28 @@
+{
+  "id": "com.gmde.inverter",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "GMDE"
+  },
+  "description": {
+    "en": "Adds support for GMDE inverter"
+  },
+  "category": [
+    "energy"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/large.jpg",
+    "large": "/assets/images/large.jpg",
+    "xlarge": "/assets/images/large.jpg"
+  },
+  "author": {
+    "name": "Filip Bech-Larsen",
+    "email": "filipbech@filipbech.dk"
+  }
+}
