@@ -1,20 +1,10 @@
 import Homey from 'homey';
 const http = require('http.min')
 
-const refreshrate = 1000 * 60 * 10; // 1 min in ms
-
-
-    /*
-     TODO
-
-     - view / capabilities
-
-     - publish
-     
-    */
+const refreshrate = 1000 * 60 * 10; // 10 min in ms
 
 class MyDevice extends Homey.Device {
-
+  timerId!: NodeJS.Timeout;
   token!:string;
   async authenticate() {
     return http.json(`http://xd.lewei50.com/api/v1/user/Login?lang=en&username=${this.homey.settings.get('username')}&password=${this.homey.settings.get('password')}`)
@@ -29,43 +19,31 @@ class MyDevice extends Homey.Device {
     return http.json(`${url}&token=${this.token}`);
   }
 
-  inverterData = {
-    FEEDINPOWER:0,
-    FZGL:0,
-    DQGL:0,
-    SRQWD:0
-  };
-  batteryData = {
-    B1_3:0,
-    B1_6:0,
-    B1_8:0,
-    B1_10:0
-  };    
-
   async getInverterData() {
-    const response = await this.request(`http://xd.lewei50.com/api/v1/site/inverterList/${this.homey.settings.get('customerId')}?lang=en`);
+    const response = await this.request(`http://xd.lewei50.com/api/v1/site/inverterList/${this.homey.settings.get('customerId')}?lang=en`).catch(this.error);
     const dictionary = response.data.find((inverter:any)=>inverter.id==this.homey.settings.get('deviceId')).dataDict;
-    this.setCapabilityValue('measure_power.1', +dictionary.find((data:any)=>data.key==='DQGL').value);
-    this.setCapabilityValue('measure_power.2', +dictionary.find((data:any)=>data.key==='FEEDINPOWER').value);
-    this.setCapabilityValue('measure_power.3', +dictionary.find((data:any)=>data.key==='FZGL').value);
-    this.setCapabilityValue('measure_power.4', +dictionary.find((data:any)=>data.key==='SRQWD').value);
+    await this.setCapabilityValue('measure_power', +dictionary.find((data:any)=>data.key==='DQGL').value).catch(this.error);
+    await this.setCapabilityValue('measure_customtemperature', +dictionary.find((data:any)=>data.key==='SRQWD').value).catch(this.error);
+    await this.setCapabilityValue('measure_power.2', +dictionary.find((data:any)=>data.key==='FEEDINPOWER').value).catch(this.error);
+    await this.setCapabilityValue('measure_power.3', +dictionary.find((data:any)=>data.key==='FZGL').value).catch(this.error);
+    this.log('Inverter data updated');
   }
   async getBatteryData() {
-    const response = await this.request(`http://xd.lewei50.com/api/v1/site/BatteryList/${this.homey.settings.get('customerId')}?lang=en`);
+    const response = await this.request(`http://xd.lewei50.com/api/v1/site/BatteryList/${this.homey.settings.get('customerId')}?lang=en`).catch(this.error);
     const dictionary = response.data.find((inverter:any)=>inverter.id==this.homey.settings.get('deviceId')).batList[0].dataDict;
-    this.setCapabilityValue('measure_power.5', +dictionary.find((data:any)=>data.key==='B1_3').value);
-    this.setCapabilityValue('measure_power.6', +dictionary.find((data:any)=>data.key==='B1_6').value);
-    this.setCapabilityValue('measure_power.7', +dictionary.find((data:any)=>data.key==='B1_8').value);
-    this.setCapabilityValue('measure_power.8', +dictionary.find((data:any)=>data.key==='B1_10').value);
+    await this.setCapabilityValue('measure_custombattery.5', +dictionary.find((data:any)=>data.key==='B1_3').value).catch(this.error);
+    await this.setCapabilityValue('measure_custombattery.6', +dictionary.find((data:any)=>data.key==='B1_6').value).catch(this.error);
+    await this.setCapabilityValue('measure_custombattery.7', +dictionary.find((data:any)=>data.key==='B1_8').value).catch(this.error);
+    await this.setCapabilityValue('measure_custombattery.8', +dictionary.find((data:any)=>data.key==='B1_10').value).catch(this.error);
+    this.log('battery data updated');
   }
 
   async tick() {
-    // this.log('tick');
+    this.log('tick');
     try {
       await this.getInverterData();
       await this.getBatteryData();
-      this.log(this.inverterData, this.batteryData);
-      setTimeout(this.tick.bind(this), refreshrate); 
+      this.timerId = setTimeout(this.tick.bind(this), refreshrate); 
     } catch(e) {
       try {
         this.log('failed to get data - unavailable OR un-authenticated');
@@ -73,34 +51,51 @@ class MyDevice extends Homey.Device {
         this.tick();
       } catch(err) {
         this.log('failed to authenticated');
-        setTimeout(this.tick.bind(this), refreshrate); 
+        this.timerId = setTimeout(this.tick.bind(this), refreshrate); 
       }
     }
   }
 
   async onInit() {
-    //inverter capabilities
-    this.addCapability('measure_power.1');
-    this.setCapabilityOptions("measure_power.1", {title:'Power Now'})
-    this.addCapability('measure_power.2');
-    this.setCapabilityOptions("measure_power.2", {title:'Grid Power'})
-    this.addCapability('measure_power.3');
-    this.setCapabilityOptions("measure_power.3", {title:'Load Power'})    
-    this.addCapability('measure_power.4');
-    this.setCapabilityOptions("measure_power.3", {title:'Radiator temperature', units:'°C'})    
 
-    //battery capabilities
-    this.addCapability('measure_power.5');
-    this.setCapabilityOptions("measure_power.5", {title:'Battery Power'})
-    this.addCapability('measure_power.6');
-    this.setCapabilityOptions("measure_power.6", {title:'High voltage', units:'mV'})
-    this.addCapability('measure_power.7');
-    this.setCapabilityOptions("measure_power.7", {title:'Low voltage', units:'mV'})    
-    this.addCapability('measure_power.8');
-    this.setCapabilityOptions("measure_power.8", {title:'SOC', units:'%'})   
+    try {
+      //inverter capabilities
+      await this.addCapability('measure_power');
+      await this.setCapabilityOptions("measure_power", {title:'Power Now'})
+      await this.addCapability('measure_customtemperature');
+      await this.setCapabilityOptions("measure_customtemperature", {title:'Radiator temperature'})
+      await this.addCapability('measure_power.2');
+      await this.setCapabilityOptions("measure_power.2", {title:'Grid Power'})
+      await this.addCapability('measure_power.3');
+      await this.setCapabilityOptions("measure_power.3", {title:'Load Power'})    
 
-    // start data fetching
-    this.tick();
+      // //battery capabilities
+      await this.addCapability('measure_custombattery.5');
+      await this.setCapabilityOptions("measure_custombattery.5", {title:'Battery Power'})
+      await this.addCapability('measure_custombattery.8');
+      await this.setCapabilityOptions("measure_custombattery.8", {title:'SOC', units:'%'})   
+      await this.addCapability('measure_custombattery.6');
+      await this.setCapabilityOptions("measure_custombattery.6", {title:'High voltage', units:'mV'})
+      await this.addCapability('measure_custombattery.7');
+      await this.setCapabilityOptions("measure_custombattery.7", {title:'Low voltage', units:'mV'})    
+
+
+      await this.addCapability('button');
+      await this.setCapabilityOptions("button", {title:'Refresh'})
+      this.registerCapabilityListener('button', (value, opts) => {
+        clearTimeout(this.timerId);
+        this.tick();
+      })   
+
+      
+
+      // start data fetching
+      this.tick();
+
+    } catch(e) {
+      this.error(e);
+    }
+    
   }
 
 }

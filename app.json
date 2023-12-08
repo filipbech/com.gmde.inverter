@@ -58,18 +58,33 @@
     }
   ],
   "capabilities": {
-    "measure_power": {
+    "measure_custombattery": {
       "type": "number",
       "title": {
         "en": "Power"
       },
       "uiComponent": "sensor",
-      "icon": "/assets/watts.svg",
+      "icon": "/assets/battery.svg",
       "getable": true,
       "setable": false,
       "insights": false,
       "units": {
         "en": "W"
+      },
+      "decimals": 0
+    },
+    "measure_customtemperature": {
+      "type": "number",
+      "title": {
+        "en": "Temperature"
+      },
+      "uiComponent": "sensor",
+      "icon": "/assets/temperature.svg",
+      "getable": true,
+      "setable": false,
+      "insights": false,
+      "units": {
+        "en": "°C"
       },
       "decimals": 0
     }
