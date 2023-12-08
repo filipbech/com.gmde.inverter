@@ -16,11 +16,11 @@
   "category": [
     "energy"
   ],
+  "brandColor": "#387ef5",
   "permissions": [],
   "images": {
-    "small": "/assets/images/large.jpg",
-    "large": "/assets/images/large.jpg",
-    "xlarge": "/assets/images/large.jpg"
+    "small": "/assets/images/small.jpg",
+    "large": "/assets/images/large.jpg"
   },
   "author": {
     "name": "Filip Bech-Larsen",
@@ -39,8 +39,7 @@
       "connectivity": [],
       "images": {
         "small": "/drivers/inverter/assets/images/small.png",
-        "large": "/drivers/inverter/assets/images/small.png",
-        "xlarge": "/drivers/inverter/assets/images/small.png"
+        "large": "/drivers/inverter/assets/images/large.png"
       },
       "pair": [
         {
