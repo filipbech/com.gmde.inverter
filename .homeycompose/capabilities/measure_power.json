@@ -1,0 +1,15 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Power"
+  },
+  "uiComponent": "sensor",
+  "icon": "/assets/watts.svg",
+  "getable": true,
+  "setable": false,
+  "insights": false,
+  "units": {
+    "en": "W"
+  },
+  "decimals": 0
+}
