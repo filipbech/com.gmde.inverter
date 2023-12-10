@@ -1,7 +1,7 @@
 import Homey from 'homey';
 const http = require('http.min')
 
-const refreshrate = 1000 * 60 * 10; // 10 min in ms
+const refreshrate = 1000 * 60 * 5; // 5 min in ms
 
 class MyDevice extends Homey.Device {
   timerId!: NodeJS.Timeout;
@@ -26,7 +26,7 @@ class MyDevice extends Homey.Device {
     await this.setCapabilityValue('measure_customtemperature', +dictionary.find((data:any)=>data.key==='SRQWD').value).catch(this.error);
     await this.setCapabilityValue('measure_power.2', +dictionary.find((data:any)=>data.key==='FEEDINPOWER').value).catch(this.error);
     await this.setCapabilityValue('measure_power.3', +dictionary.find((data:any)=>data.key==='FZGL').value).catch(this.error);
-    this.log('Inverter data updated');
+    // this.log('Inverter data updated');
   }
   async getBatteryData() {
     const response = await this.request(`http://xd.lewei50.com/api/v1/site/BatteryList/${this.homey.settings.get('customerId')}?lang=en`).catch(this.error);
@@ -35,22 +35,22 @@ class MyDevice extends Homey.Device {
     await this.setCapabilityValue('measure_custombattery.6', +dictionary.find((data:any)=>data.key==='B1_6').value).catch(this.error);
     await this.setCapabilityValue('measure_custombattery.7', +dictionary.find((data:any)=>data.key==='B1_8').value).catch(this.error);
     await this.setCapabilityValue('measure_custombattery.8', +dictionary.find((data:any)=>data.key==='B1_10').value).catch(this.error);
-    this.log('battery data updated');
+    // this.log('battery data updated');
   }
 
   async tick() {
-    this.log('tick');
+    // this.log('tick');
     try {
       await this.getInverterData();
       await this.getBatteryData();
       this.timerId = setTimeout(this.tick.bind(this), refreshrate); 
     } catch(e) {
       try {
-        this.log('failed to get data - unavailable OR un-authenticated');
+        // this.log('failed to get data - unavailable OR un-authenticated');
         await this.authenticate();
         this.tick();
       } catch(err) {
-        this.log('failed to authenticated');
+        // this.log('failed to authenticated');
         this.timerId = setTimeout(this.tick.bind(this), refreshrate); 
       }
     }
