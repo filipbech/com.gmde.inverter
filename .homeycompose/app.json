@@ -1,6 +1,6 @@
 {
   "id": "com.gmde.inverter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "platforms": [
@@ -15,7 +15,7 @@
   "category": [
     "energy"
   ],
-  "brandColor":"#387ef5",
+  "brandColor": "#387ef5",
   "permissions": [],
   "images": {
     "small": "/assets/images/small.jpg",
