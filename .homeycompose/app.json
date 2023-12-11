@@ -1,6 +1,6 @@
 {
   "id": "com.gmde.inverter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "platforms": [
@@ -10,7 +10,7 @@
     "en": "GMDE"
   },
   "description": {
-    "en": "Adds support for GMDE inverter"
+    "en": "Track your power generation and consumption"
   },
   "category": [
     "energy"

@@ -1,3 +1,1 @@
-# GMDE
-
-Adds support for GMDE inverter
+See how your solar panels are generating power, see how your electricity consumption is draining your battery, and how the temperature affects both numbers. Works with homey insights, so you can automatically follow over time with the beautiful graphs. 
