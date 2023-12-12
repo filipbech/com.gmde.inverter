@@ -24,5 +24,16 @@
   "author": {
     "name": "Filip Bech-Larsen",
     "email": "filipbech@filipbech.dk"
-  }
+  },
+  "contributing": {
+    "donate": {
+      "githubSponsors": {
+        "username": "filipbech"
+      }
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/filipbech/com.gmde.inverter/issues"
+  },
+  "source": "https://github.com/filipbech/com.gmde.inverter"
 }
