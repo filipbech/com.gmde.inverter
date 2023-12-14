@@ -62,8 +62,8 @@ class MyDevice extends Homey.Device {
       //inverter capabilities
       await this.addCapability('measure_power');
       await this.setCapabilityOptions("measure_power", {title:'Power Now'})
-      await this.addCapability('measure_customtemperature');
-      await this.setCapabilityOptions("measure_customtemperature", {title:'Radiator temperature'})
+      await this.addCapability('measure_custombattery.8');
+      await this.setCapabilityOptions("measure_custombattery.8", {title:'SOC', units:'%'}) 
       await this.addCapability('measure_power.2');
       await this.setCapabilityOptions("measure_power.2", {title:'Grid Power'})
       await this.addCapability('measure_power.3');
@@ -72,8 +72,8 @@ class MyDevice extends Homey.Device {
       // //battery capabilities
       await this.addCapability('measure_custombattery.5');
       await this.setCapabilityOptions("measure_custombattery.5", {title:'Battery Power'})
-      await this.addCapability('measure_custombattery.8');
-      await this.setCapabilityOptions("measure_custombattery.8", {title:'SOC', units:'%'})   
+      await this.addCapability('measure_customtemperature');
+      await this.setCapabilityOptions("measure_customtemperature", {title:'Radiator temperature'})
       await this.addCapability('measure_custombattery.6');
       await this.setCapabilityOptions("measure_custombattery.6", {title:'High voltage', units:'mV'})
       await this.addCapability('measure_custombattery.7');

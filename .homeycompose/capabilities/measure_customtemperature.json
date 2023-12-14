@@ -7,7 +7,7 @@
   "icon": "/assets/temperature.svg",
   "getable": true,
   "setable": false,
-  "insights": false,
+  "insights": true,
   "units": {
     "en": "°C"
   },
