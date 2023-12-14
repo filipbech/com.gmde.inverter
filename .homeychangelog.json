@@ -10,5 +10,8 @@
   },
   "1.0.3": {
     "en": "Add OSS links"
+  },
+  "1.0.4": {
+    "en": "Reordered capabilities and added insights"
   }
 }
